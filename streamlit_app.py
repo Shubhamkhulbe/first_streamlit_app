@@ -27,19 +27,15 @@ streamlit.dataframe(fruits_to_show)
 
 
 #API response
-
 streamlit.header("Fruityvice Fruit Advice!")
-try:
-  fruit_choice = streamlit.text_input('What fruit would you like information about?')
-  if not fruit_choice:
-    streamlit.error("Please select a fruit to get information.")
-  else:
-    #streamlit.write('The user entered ', fruit_choice)
-    fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" +fruit_choice)
+fruit_choice = streamlit.text_input('What fruit would you like information about?','Kiwi')
+streamlit.write('The user entered ', fruit_choice)
+fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" +fruit_choice)
+
 # Normalizing json to look good 
-    fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
+fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
 # Presenting data in tabular form 
-    streamlit.dataframe(fruityvice_normalized)
+streamlit.dataframe(fruityvice_normalized)
 
 
 #connect to snowflake
@@ -53,9 +49,8 @@ my_data_row = my_cur.fetchone()
 streamlit.header("The fruit load list contains:")
 streamlit.dataframe(my_data_row)
 
-add_my_fruit = streamlit.text_input('What fruit would you like information about?','jackfruit');
+add_my_fruit = streamlit.text_input('What fruit would you like information about?','jackfruit')
 
 streamlit.write('Thanks for adding ',add_my_fruit);
 my_cur.execute("insert into fruit_load_list values('from streamlit')");
-
 
